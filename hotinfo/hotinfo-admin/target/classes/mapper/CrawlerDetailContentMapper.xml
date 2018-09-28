@@ -1,0 +1,33 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.lllm.hotinfo.admin.dao.crawler.CrawlerDetailDao">
+    <sql id="columns">
+          a.id,
+          a.parent_id AS parentId,
+          a.title AS aTitle,
+          a.top_nav AS topNav,
+          a.info,
+          a.content AS aContent,
+          a.today_hots AS todayHots,
+          a.news_24h AS new24H,
+          a.created,
+          a.updated,
+          a.del_flag AS delFlag
+    </sql>
+
+    <insert id="insertBatch" parameterType="ArrayList">
+        INSERT INTO hi_detail
+        (parent_id,title,top_nav,info,content,today_hots,news_24h,created,updated,del_flag)
+        VALUES
+        <foreach collection ="list" item="item" separator =",">
+            (#{item.parentId},#{item.aTitle},#{item.topNav},#{item.info},#{item.aContent},#{item.todayHots},#{item.news24H},#{item.created},#{item.updated},#{item.delFlag})
+        </foreach >
+    </insert>
+
+    <insert id="insert">
+       INSERT INTO hi_detail
+       (parent_id,title,top_nav,info,content,today_hots,news_24h,created,updated,del_flag)
+       VALUES
+       (#{content.parentId},#{content.aTitle},#{content.topNav},#{content.info},#{content.aContent},#{content.todayHots},#{content.new24H},#{content.created},#{content.updated},#{content.delFlag})
+    </insert>
+</mapper>

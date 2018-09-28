@@ -1,0 +1,214 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.lllm.hotinfo.admin.dao.UserDao">
+    <!--抽取字段-->
+    <sql id="selectHiUserColumns">
+          a.id,
+          a.username,
+          a.password,
+          a.headurl AS headUrl,
+          a.phone,
+          a.email,
+          a.updated,
+          a.role,
+          a.del_flag AS delFlag
+    </sql>
+    <!--查询全部,除了管理员-->
+    <select id="selectAll" resultType="HiUser">
+        SELECT
+        <include refid="selectHiUserColumns"/>
+        FROM
+        hi_user AS a
+        where
+        del_flag = 1
+        AND
+        role != 1
+
+    </select>
+    <!--通过用户名查询-->
+    <select id="getByUserName" resultType="HiUser">
+        SELECT
+        <include refid="selectHiUserColumns"/>
+        FROM
+        hi_user AS a
+        WHERE
+        a.username = #{userName}
+    </select>
+    <!--判断用户名唯一性-->
+    <select id="uniqueUserName" resultType="int">
+        SELECT
+          COUNT( 1 )
+        FROM
+	      hi_user
+        <where>
+	      username = #{userName}
+            AND
+            del_flag = 1
+            <if test="id != null and id != ''">
+                AND  id != #{id}
+            </if>
+        </where>
+    </select>
+    <!--验证自动登录cookie-->
+    <select id="checkACookie" resultType="int">
+        SELECT
+          COUNT( 1 )
+        FROM
+	      hi_user
+        WHERE
+	      username = #{userName}
+	       AND
+	      password = #{passWord}
+    </select>
+    <!--判断邮箱唯一性-->
+    <select id="uniqueEmail" resultType="int">
+        SELECT
+          COUNT( 1 )
+        FROM
+	      hi_user
+        <where>
+	      email = #{email} AND
+            del_flag = 1
+            <if test="id != null and id != ''">
+                AND  id != #{id}
+            </if>
+        </where>
+    </select>
+    <!--判断电话唯一性-->
+    <select id="uniquePhone" resultType="int">
+       SELECT
+	    COUNT( 1 )
+        FROM
+	      hi_user
+        <where>
+	      phone = #{phone} AND
+            del_flag = 1
+            <if test="id != null and id != ''">
+                AND  id != #{id}
+            </if>
+        </where>
+
+    </select>
+    <!--修改-->
+    <select id="update">
+        UPDATE
+        hi_user
+        SET
+        username = #{userName},
+        password = #{passWord},
+        headurl = #{headUrl},
+        phone = #{phone},
+        email = #{email},
+        updated = #{updated},
+        role = #{role},
+        del_flag = #{delFlag}
+        WHERE
+        id = #{id}
+    </select>
+    <!--添加-->
+    <insert id="insert" parameterType="HiUser">
+    INSERT INTO hi_user (
+    username,
+    password,
+    headurl,
+    phone,
+    email,
+    created,
+    updated,
+    role,
+    del_flag
+    )
+    VALUES
+    (
+    #{userName},
+    #{passWord},
+    #{headUrl},
+    #{phone},
+    #{email},
+    #{created},
+    #{updated},
+    #{role},
+    #{delFlag}
+    )
+    </insert>
+    <!--通过id查询-->
+    <select id="getTById" resultType="HiUser">
+        SELECT
+        <include refid="selectHiUserColumns"/>
+        FROM
+        hi_user AS a
+        WHERE
+        id = #{id}
+    </select>
+    <!--查询分页最大页数-->
+    <select id="count" resultType="Integer">
+        SELECT
+        COUNT( 1 )
+        FROM
+        hi_user AS a
+        <where>
+            a.role != 1 AND a.del_flag = 1
+            <if test="userName != null and userName != ''">
+                AND a.username LIKE concat('%', #{userName}, '%')
+            </if>
+            <if test="phone != null and phone != ''">
+                AND a.phone LIKE concat(#{phone}, '%')
+            </if>
+            <if test="email != null and email != ''">
+                AND a.email LIKE concat('%', #{email}, '%')
+            </if>
+        </where>
+    </select>
+    <!--分页-->
+    <select id="page" resultType="HiUser">
+        SELECT
+        <include refid="selectHiUserColumns"/>
+        FROM
+        hi_user AS a
+        <where>
+            a.role != 1 AND a.del_flag = 1
+            <if test="userName != null and userName != ''">
+                AND a.username LIKE concat('%', #{userName}, '%')
+            </if>
+            <if test="phone != null and phone != ''">
+                AND a.phone LIKE concat(#{phone}, '%')
+            </if>
+            <if test="email != null and email != ''">
+                AND a.email LIKE concat('%', #{email}, '%')
+            </if>
+        </where>
+        LIMIT #{start},#{length}
+    </select>
+    <!--伪删除-->
+    <delete id="delete">
+        UPDATE
+        hi_user
+        SET
+        del_flag = 0
+        WHERE
+        id = #{id}
+    </delete>
+    <!--批量删除-->
+    <delete id="batchDelete">
+        UPDATE
+        hi_user
+        SET
+        del_flag = 0
+        WHERE
+        <if test="array != null and array.length > 0">
+            id IN
+            <foreach collection="array" open="(" close=")" item="id" separator=",">
+                #{id}
+            </foreach>
+        </if>
+    </delete>
+    <!--添加测试用户-->
+    <insert id="addUserTest">
+        INSERT
+        INTO
+        hi_user
+        (username, `password`, headurl ,phone, email, created, updated,role,del_flag)
+       VALUES
+	    (#{userName},#{passWord}, #{headUrl} ,#{phone},#{email},#{created},#{updated},#{role},#{delFlag});
+    </insert>
+</mapper>

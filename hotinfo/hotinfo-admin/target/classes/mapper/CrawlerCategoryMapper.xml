@@ -1,0 +1,48 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.lllm.hotinfo.admin.dao.crawler.CrawlerCategoryDao">
+    <sql id="categoryColumns">
+          a.id,
+          a.parent_id AS parentId,
+          a.is_parent AS isParent,
+          a.data_subid AS dataSubId,
+          a.title,
+          a.url,
+          a.created,
+          a.updated,
+          a.del_flag AS delFlag,
+          a.show_in_body AS showInBody
+    </sql>
+
+    <insert id="insert">
+       INSERT INTO hi_category
+       (parent_id,is_parent,data_subid,title,url,created,updated,del_flag,show_in_body)
+       VALUES
+       (#{parentId},#{isParent},#{dataSubId},#{title},#{url},#{created},#{updated},#{delFlag},#{showInBody})
+    </insert>
+
+    <insert id="insertBatch" parameterType="ArrayList">
+        INSERT INTO hi_category
+        (parent_id,is_parent,data_subid,title,url,created,updated,del_flag,show_in_body)
+        VALUES
+        <foreach collection ="list" item="crawlerCategory" separator =",">
+            (#{crawlerCategory.parentId},#{crawlerCategory.isParent},#{crawlerCategory.dataSubId},#{crawlerCategory.title},#{crawlerCategory.url},#{crawlerCategory.created},#{crawlerCategory.updated},#{crawlerCategory.delFlag},#{crawlerCategory.showInBody})
+        </foreach >
+    </insert>
+
+    <select id="getByDataId" resultType="CrawlerCategory">
+        SELECT
+        <include refid="categoryColumns"/>
+        FROM hi_category AS a
+        WHERE a.data_subid=#{dataId}
+    </select>
+
+    <select id="getByShowId" resultType="CrawlerCategory">
+        SELECT
+        <include refid="categoryColumns"/>
+        FROM hi_category AS a
+        WHERE a.show_in_body=1
+    </select>
+
+
+</mapper>

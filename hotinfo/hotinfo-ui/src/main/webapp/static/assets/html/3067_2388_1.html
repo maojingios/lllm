@@ -1,0 +1,79 @@
+
+<!-- saved from url=(0042)http://www2.xinmin.cn/3067/3067_2388_1.htm -->
+<html><head><meta http-equiv="Content-Type" content="text/html; charset=windows-1252">
+    <title></title>
+</head>
+<body style="margin:0px;" marginwidth="0" marginheight="0">
+<center>
+<script language="javascript">
+<!--
+var materialUrl="http://img0.xinmin.cn/2018/08/31/20180831171234358748.png";
+var sizeWidth=250;
+var sizeHeight=250;
+var flashImage="http://www2.xinmin.cn/flash.gif";
+var ClickSrc="http://www2.xinmin.cn:6900/clk/?id=3067&catalog=2388&url=http%3a%2f%2fwww.naveco.com.cn%2f";
+var flashClick=parseInt("1");
+
+if(isNaN(flashClick) || flashClick<0 || flashClick>1)
+    flashClick=1;
+
+var adHtml;
+
+var fileExtend=materialUrl.substring(materialUrl.lastIndexOf('.')+1).toLowerCase();
+var isFlash=fileExtend=="swf";
+var flashVarsParam;
+var flashVarsEmbed;
+
+
+adHtml="";
+
+
+if(isFlash)
+{
+	var flashVarsParams;
+	var flashVarsEmbed;
+	var objectBegin;
+	var objectEnd;
+
+	if(flashClick)
+	{
+		flashVarsParams = "";
+		flashVarsEmbed = "";
+		objectBegin = "<div id=flashdiv style='z-index:1;position:absolute;left:0px; top:0px'>\n";
+		objectEnd = "<div id=imagediv style='z-index:2;position:absolute; left:0px; top:0px'>\n" + 
+			"<a href='" + ClickSrc + "' target='_blank'><img src='" + flashImage + "' width='" + sizeWidth + "' height='" + sizeHeight + "' border='0'></a>\n" + 
+			"</div>\n</div>\n";
+	}
+	else
+	{
+		flashVarsParams = "<param name='flashvars' value='adlink=" + ClickSrc + "' />\n";
+		flashVarsEmbed = " flashvars='adlink=" + ClickSrc + "'";
+		objectBegin = "";
+		objectEnd = "";		
+	}
+	adHtml = objectBegin +
+	"<object classid='clsid:D27CDB6E-AE6D-11cf-96B8-444553540000' codebase='http://download.macromedia.com/pub/shockwave/cabs/flash/swflash.cab#version=7,0,19,0' border='0' width='" + sizeWidth + "' height='" + sizeHeight + "'>\n" +
+	"<param name='movie' value='" + materialUrl + "' />\n" +
+	"<param name='quality' value='high' />\n" +
+	"<param name='wmode' value='transparent'>\n" +
+	flashVarsParams +
+	"<embed src='" + materialUrl + "' quality='high' pluginspage='http://www.macromedia.com/go/getflashplayer' width='" + sizeWidth + "' height='" + sizeHeight + "' type='application/x-shockwave-flash'  wmode='transparent' " + flashVarsEmbed + "></embed>\n" +
+	"</object>\n" + objectEnd ;}
+else
+{
+	if(flashClick)
+	{
+		adHtml+="<a href='" + ClickSrc + "' target='_blank'><img src='" + materialUrl + "' width='" + sizeWidth + "' height='" + sizeHeight + "' border='0'></a>\n";
+	}
+	else
+	{
+		adHtml+="<img src='" + materialUrl + "' width='" + sizeWidth + "' height='" + sizeHeight + "' border='0'>\n";
+	}
+}
+document.write(adHtml);
+//-->
+</script><a href="http://www2.xinmin.cn:6900/clk/?id=3067&amp;catalog=2388&amp;url=http%3a%2f%2fwww.naveco.com.cn%2f" target="_blank"><img src="./20180831171234358748.png" width="250" height="250" border="0"></a>
+
+</center>
+
+</body></html>

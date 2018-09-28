@@ -1,0 +1,123 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.lllm.hotinfo.admin.dao.TopContentDao">
+    <sql id="selectTopContentColumns">
+          a.id,
+          a.title,
+          a.url,
+          a.pic,
+          a.descr,
+          a.tag,
+          a.updated,
+          a.del_flag,
+          a.classify
+    </sql>
+    <select id="selectAll" resultType="TopContent">
+        SELECT
+        <include refid="selectTopContentColumns"/>
+        FROM
+        hi_top_news AS a
+        WHERE
+        a.del_flag = 1
+    </select>
+<!--添加-->
+    <insert id="insert" parameterType="TopContent">
+        INSERT
+        INTO
+        hi_top_news (
+          title,
+          url,
+          pic,
+          descr,
+          tag,
+          created,
+          updated,
+          classify,
+          del_flag
+        )
+        VALUES
+          (
+            #{title},
+            #{url},
+            #{pic},
+            #{descr},
+            #{tag},
+            #{created},
+            #{updated},
+            #{classify},
+            #{delFlag}
+          )
+    </insert>
+
+    <select id="getTById" resultType="TopContent">
+        SELECT
+         <include refid="selectTopContentColumns"/>
+        FROM
+        hi_top_news AS a
+        WHERE
+         a.id = #{id}
+        AND
+        a.del_flag = 1
+    </select>
+
+    <select id="count" resultType="Integer">
+        SELECT
+         COUNT( 1 )
+        FROM
+        hi_top_news
+        <where>
+            del_flag = 1
+            <if test="title != null and title != ''">
+                AND title LIKE concat('%',#{title},'%')
+            </if>
+        </where>
+    </select>
+
+    <select id="page" resultType="TopContent">
+        SELECT
+        <include refid="selectTopContentColumns"/>
+        FROM
+        hi_top_news AS a
+        <where>
+            a.del_flag = 1
+            <if test="title != null and title != ''">
+                AND a.title LIKE concat('%',#{title},'%')
+            </if>
+        </where>
+        LIMIT #{start},#{length}
+    </select>
+    <update id="delete" parameterType="long">
+        UPDATE
+          hi_top_news
+        SET
+          del_flag = 0
+         WHERE id = #{id}
+    </update>
+<!--    <update id="batchDelete">
+        UPDATE
+        hi_top_news
+        SET
+        del_flag = 0
+        WHERE
+        <if test="array != null and array.length > 0">
+            id IN
+            <foreach collection="array" open="(" close=")" item="id" separator=",">
+                #{id}
+            </foreach>
+        </if>
+    </update>-->
+    <!--修改-->
+    <update id="update">
+        UPDATE
+          hi_top_news
+        SET
+           title = #{title},
+           url = #{url},
+           pic = #{pic},
+           descr = #{descr},
+           tag = #{tag},
+           updated = #{updated},
+           classify = #{classify}
+         WHERE id = #{id}
+    </update>
+</mapper>

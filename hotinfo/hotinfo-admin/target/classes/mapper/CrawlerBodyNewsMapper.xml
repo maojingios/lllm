@@ -1,0 +1,35 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.lllm.hotinfo.admin.dao.crawler.CrawlerBodyNewDao">
+    <sql id="bodyNewColumns">
+          a.id,
+          a.classify,
+          a.category_id AS parentId,
+          a.title,
+          a.url,
+          a.pic,
+          a.descr,
+          a.tag,
+          a.created,
+          a.updated,
+          a.del_flag AS delFlag
+    </sql>
+
+    <insert id="insertBatch" parameterType="ArrayList">
+        INSERT INTO hi_body_news
+        (id,classify,category_id,title,url,pic,descr,tag,created,updated,del_flag)
+        VALUES
+        <foreach collection ="list" item="new" separator =",">
+            (#{new.id},#{new.classify},#{new.parentId},#{new.title},#{new.url},#{new.pic},#{new.descr},#{new.tag},#{new.created},#{new.updated},#{new.delFlag})
+        </foreach >
+    </insert>
+
+    <insert id="insert">
+       INSERT INTO hi_body_news
+       (id,classify,category_id,title,url,pic,descr,tag,created,updated,del_flag)
+       VALUES
+       (#{new.id},#{new.classify},#{new.parentId},#{new.title},#{new.url},#{new.pic},#{new.descr},#{new.tag},#{new.created},#{new.updated},#{new.delFlag})
+    </insert>
+
+
+</mapper>
